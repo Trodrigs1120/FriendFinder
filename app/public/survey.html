@@ -74,7 +74,12 @@
 
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
 <script type="text/javascript">
-var i=0;
+var Counter=0;
+var newSurvey = {
+        friendName: "",
+        friendphoto: "",
+       scores:[]
+      };
 var questions=["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10"]
     // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
     // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
@@ -85,16 +90,26 @@ var questions=["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10"]
       event.preventDefault();
 
       // Here we grab the form elements
-      var newSurvey = {
+      newSurvey = {
         friendName: $("#survey-name").val().trim(),
         friendphoto: $("#survey-picture").val().trim(),
        scores:[]
       };
+      var form = document.getElementsByName('choice');
+  for (var i = 0, length = form.length; i < length; i++) {
+    if (form[i].checked) {
+        // do whatever you want with the checked radio
+        console.log(form[i].value);
 
+        // only one radio can be logically checked, don't check the rest
+        break;
+    }
+  }
       console.log(newSurvey);
+      console.log(newSurvey.scores);
       $("#theform").empty()
-  $("#theform").append("The first question is..." + questions[i])
-  $("#theform").append('<form> <input type="radio" id="Choice1" name="contact" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="contact" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="contact" value=3> <label for="Choice3">Nuetral</label> <input type="radio" id="Choice4" name="contact" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="contact" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+  $("#theform").append("The first question is..." + questions[Counter])
+  $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
   NextButton()
       
       
@@ -111,16 +126,30 @@ body.appendChild(Nextbutton);
 
 // 3. Add event handler
 Nextbutton.addEventListener ("click", function() {
-  i=i+1
+  Counter=Counter+1
   console.log("you clicked next")
-  console.log(i)
+  console.log(Counter)
+  var form = document.getElementsByName('choice');
+  for (var i = 0, length = form.length; i < length; i++) {
+    if (form[i].checked) {
+        // do whatever you want with the checked radio
+        console.log(form[i].value);
+
+        // only one radio can be logically checked, don't check the rest
+        break;
+    }
+  }
   $("#theform").empty()
-  $("#theform").append("The first question is..." + questions[i])
-  $("#theform").append('<form> <input type="radio" id="Choice1" name="contact" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="contact" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="contact" value=3> <label for="Choice3">Nuetral</label> <input type="radio" id="Choice4" name="contact" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="contact" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+  $("#theform").append("Question: " + questions[Counter])
+  $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+  
+  newSurvey.scores.push(form[i].value)
   NextButton()
+  
 });
-}
-                
+
+
+}              
       // This line is the magic. It"s very similar to the standard ajax function we used.
       // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
       // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
