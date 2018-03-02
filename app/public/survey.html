@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Reservation Page</title>
+  <title></title>
 
   <!-- Latest compiled and minified CSS & JS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -15,9 +15,9 @@
   <div class="container">
 
     <div class="jumbotron">
-      <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> Hot Restaurant</h1>
+      <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> Friend Finder</h1>
       <hr>
-      <h2 class="text-center">Make your reservation</h2>
+      
       <br>
 
       <div class="text-center">
@@ -34,19 +34,20 @@
           <div class="panel-heading">
             <h4 class="panel-title">Survey Submission</h4>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="FormPanel">
 
             <form id="theform" role="form">
 
               <div class="form-group">
                 <p> Please enter your name and the url of a picture for your avatar</p>
-                <label for="survey-name">Name</label>
-                <input type="text" class="form-control" id="survey-name">
+                <p> Fields notated with an "*" are required</p>
+                <label for="survey-name">Name*</label>
+                <input type="text" class="form-control" id="survey-name" required>
               </div>
 
               <div class="form-group">
-                <label for="survey-picture">Picture</label>
-                <input type="text" class="form-control" id="survey-picture">
+                <label for="survey-picture">Picture*</label>
+                <input type="text" class="form-control" id="survey-picture" required>
               </div>
               <p>From here we'll move on to the survey</p>
               <button type="submit" class="btn btn-primary submit">Start</button>
@@ -63,8 +64,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p><a href="/api/matches">API Table Link</a> | <a href="/api/waitlist">API Wait List</a> | <a href="https://github.com/afhaque/HotRestaurant">GitHub Repo</a></p>
-      </div>
+        <p><a href="/api/matches">API Table Link</a> </p></div>
     </footer>
 
   </div>
@@ -74,91 +74,116 @@
 
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
 <script type="text/javascript">
-var Counter=0;
+var badanswer=0
+var Counter = 0;
 var newSurvey = {
-        friendName: "",
-        friendphoto: "",
-       scores:[]
-      };
-var questions=["Dogs are the best house pet.","Cleanliness is important for me.","I like rap music","I'm smarter than other people.","I am always on time.","I get impatient with others when they are late" ,"I like Pineapple on my pizza","I could eat guacamole raw","Chipotle is overrated" ,"I like Miller High Life"]
-    // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
-    // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-    // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
-    // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
+    friendName: "",
+    friendphoto: "",
+    scores: []
+};
+var questions = ["Dogs are the best house pet.", "Cleanliness is important for me.", "I like rap music", "I'm smarter than other people.", "I am always on time.", "I get impatient with others when they are late", "I like Pineapple on my pizza", "I could eat guacamole raw", "Chipotle is overrated", "I like Miller High Life"]
+// In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+// In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
+// Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
+// In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
 
-    $(".submit").on("click", function(event) {
-      event.preventDefault();
+$(".submit").on("click", function(event) {
+    event.preventDefault();
 
-      // Here we grab the form elements
-      newSurvey = {
+    // Here we grab the form elements
+    newSurvey = {
         friendName: $("#survey-name").val().trim(),
         friendphoto: $("#survey-picture").val().trim(),
-       scores:[]
-      };
-      var form = document.getElementsByName('choice');
-  for (var i = 0, length = form.length; i < length; i++) {
-    if (form[i].checked) {
-        // do whatever you want with the checked radio
-        console.log(form[i].value);
+        scores: []
+    };
+    var form = document.getElementsByName('choice');
+    for (var i = 0, length = form.length; i < length; i++) {
+        if (form[i].checked) {
+            // do whatever you want with the checked radio
+            console.log(form[i].value);
 
-        // only one radio can be logically checked, don't check the rest
-        break;
+            // only one radio can be logically checked, don't check the rest
+            break;
+        }
     }
-  }
-      console.log(newSurvey);
-      console.log(newSurvey.scores);
-      $("#theform").empty()
-  $("#theform").append("The first question is..." + questions[Counter])
-  $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
-  NextButton()
-      
-      
+    console.log(newSurvey);
+    console.log(newSurvey.scores);
+    $("#theform").empty()
+    $("#theform").append("The first question is..." + questions[Counter])
+    $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+    NextButton()
+
+
 });
 
-function NextButton(){
-  var Nextbutton = document.createElement("button");
-      Nextbutton.innerHTML = "Next";
-      $(Nextbutton).addClass("btn btn-primary submit")
+function NextButton() {
+    var Nextbutton = document.createElement("button");
+    Nextbutton.innerHTML = "Next";
+    $(Nextbutton).addClass("btn btn-primary submit")
 
-// 2. Append somewhere
-var body = document.getElementById("theform");
-body.appendChild(Nextbutton);
+    var body = document.getElementById("theform");
+    body.appendChild(Nextbutton);
 
-// 3. Add event handler
-Nextbutton.addEventListener ("click", function() {
-  Counter=Counter+1
-  console.log("you clicked next")
-  console.log(Counter)
-  var form = document.getElementsByName('choice');
-  for (var i = 0, length = form.length; i < length; i++) {
-    if (form[i].checked) {
-        // do whatever you want with the checked radio
-        console.log(form[i].value);
+    Nextbutton.addEventListener("click", function() {
+        Counter = Counter + 1
+        console.log("you clicked next")
+        console.log(Counter)
+        var form = document.getElementsByName('choice');
+        for (var i = 0, length = form.length; i < length; i++) {
+            if (form[i].checked) {
+                // do whatever you want with the checked radio
+                console.log(form[i].value);
+                // only one radio can be logically checked, we wont check the rest
+                break;
+              //  if (i=length && form[i].checked===false){
+              //    Counter--
+              //    alert("Please select a valid answer");
+              //    badanswer=1
+              //    break
+             // }
+            }
+            
+        }
+        
+          $("#theform").empty()
+        $("#theform").append("Question: " + questions[Counter])
+        $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
 
-        // only one radio can be logically checked, don't check the rest
-        break;
-    }
+        newSurvey.scores.push(form[i].value)
+        if (Counter>=10){
+          // this does nothing currently
+          parsingInt()
+          findmatch()
+        } else {
+          NextButton()
+        }
+      
+        
+        
+    });
+
+
+}            
+function parsingInt(){
+  for (var i = 0; i< newSurvey.scores.length;i++){
+    placeholder = parseInt(newSurvey.scores[i])
+    console.log(placeholder)
+    newSurvey.scores[i]=placeholder
   }
-  $("#theform").empty()
-  $("#theform").append("Question: " + questions[Counter])
-  $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
   
-  newSurvey.scores.push(form[i].value)
-  NextButton()
-  
-});
-
-
-}              
-      // This line is the magic. It"s very similar to the standard ajax function we used.
-      // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-      // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-      // depending on if a tables is available or not.
-      
-      
-      
-     
-
-
-
+}
+function findmatch(){
+  console.log("find match ran")
+ // ajax call to server with friend object
+ $.post("/api/friends", newSurvey,
+            function(data, status) {
+              console.log(data.newFriendName)
+                $("#theform").empty()
+                $("#FormPanel").append(data.newFriendName);
+              //  $("#FormPanel").attr("src", data.newFriendPhoto);
+                
+            });
+}
 </script>
+ <style type="text/css">
+ </style>
