@@ -1,201 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Survey</title>
 
-  <!-- Latest compiled and minified CSS & JS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Survey</title>
+
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 </head>
+
 <body>
 
-  <div class="container">
+    <div class="container">
 
-    <div class="jumbotron">
-      <h1 class="text-center"><span class="glyphicon glyphicon-heart"></span> Friend Finder</h1>
-      <hr>
-      
-      <br>
+        <div class="jumbotron">
+            <h1 class="text-center"><span class="glyphicon glyphicon-heart"></span> Friend Finder</h1>
+            <hr>
 
-      <div class="text-center">
-        <a href="/tables"><button type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-list-alt"></span> View Match</button></a>
-        <a href="/"><button type="button" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-home"></span></button></a>
-      </div>
-    </div>
-   
-    <div class="row">
-      <div class="col-lg-12">
+            <br>
 
-        <!-- Reservation Page -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">Survey Submission</h4>
-          </div>
-          <div class="panel-body" id="FormPanel">
-
-            <form id="theform" role="form">
-
-              <div class="form-group">
-                <p> Please enter your name and the url of a picture for your avatar</p>
-                <p> Fields notated with an "*" are required</p>
-                <label for="survey-name">Name*</label>
-                <input type="text" class="form-control" id="survey-name" required>
-              </div>
-
-              <div class="form-group">
-                <label for="survey-picture">Picture*</label>
-                <input type="text" class="form-control" id="survey-picture" required>
-              </div>
-              <p>From here we'll move on to the survey</p>
-              <button type="submit" class="btn btn-primary submit">Start</button>
-            </form>
-              
-             
-
-          </div>
+            <div class="text-center">
+                <a href="/tables"><button type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-list-alt"></span> View Match</button></a>
+                <a href="/"><button type="button" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-home"></span></button></a>
+            </div>
         </div>
 
-      </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Survey Submission</h4>
+                    </div>
+                    <div class="panel-body" id="FormPanel">
+
+                        <form id="theform" role="form">
+
+                            <div class="form-group">
+                                <p> Please enter your name and the url of a picture for your avatar</p>
+                                <p> Fields notated with an "*" are required</p>
+                                <label for="survey-name">Name*</label>
+                                <input type="text" class="form-control" id="survey-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="survey-picture">Picture*</label>
+                                <input type="text" class="form-control" id="survey-picture" required>
+                            </div>
+                            <p>From here we'll move on to the survey</p>
+                            <button type="submit" class="btn btn-primary submit">Start</button>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container">
+                <p><a href="/api/matches">API Table Link</a> </p>
+            </div>
+        </footer>
+
     </div>
 
-
-    <footer class="footer">
-      <div class="container">
-        <p><a href="/api/matches">API Table Link</a> </p></div>
-    </footer>
-
-  </div>
-
 </body>
+
 </html>
 
-<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
+
 <script type="text/javascript">
-var badanswer=0
-var Counter = 0;
-var newSurvey = {
-    friendName: "",
-    friendphoto: "",
-    scores: []
-};
-var questions = ["Dogs are the best house pet.", "Cleanliness is important for me.", "I like rap music", "I'm smarter than other people.", "I am always on time.", "I get impatient with others when they are late", "I like Pineapple on my pizza", "I could eat guacamole raw", "Chipotle is overrated", "I like Miller High Life"]
-// In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
-// In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-// Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
-// In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
-
-$(".submit").on("click", function(event) {
-    event.preventDefault();
-
-    // Here we grab the form elements
-    newSurvey = {
-        friendName: $("#survey-name").val().trim(),
-        friendphoto: $("#survey-picture").val().trim(),
+    var Counter = 0;
+    var newSurvey = {
+        friendName: "",
+        friendphoto: "",
         scores: []
     };
-    var form = document.getElementsByName('choice');
-    for (var i = 0, length = form.length; i < length; i++) {
-        if (form[i].checked) {
-            // do whatever you want with the checked radio
-            console.log(form[i].value);
+    var questions = ["Dogs are the best house pet.", "Cleanliness is important for me.", "I like rap music", "I'm smarter than other people.", "I am always on time.", "I get impatient with others when they are late", "I like Pineapple on my pizza", "I could eat guacamole raw", "Chipotle is overrated", "I like Miller High Life"]
 
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-    }
-    console.log(newSurvey);
-    console.log(newSurvey.scores);
-    $("#theform").empty()
-    $("#theform").append("The first question is..." + questions[Counter])
-    $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3 checked="checked> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
-    NextButton()
-
-
-});
-
-function NextButton() {
-    var Nextbutton = document.createElement("button");
-    Nextbutton.innerHTML = "Next";
-    $(Nextbutton).addClass("btn btn-primary submit")
-
-    var body = document.getElementById("theform");
-    body.appendChild(Nextbutton);
-
-    Nextbutton.addEventListener("click", function() {
-        Counter = Counter + 1
-        console.log("you clicked next")
-        console.log(Counter)
+    $(".submit").on("click", function(event) {
+        event.preventDefault();
+        newSurvey = {
+            friendName: $("#survey-name").val().trim(),
+            friendphoto: $("#survey-picture").val().trim(),
+            scores: []
+        };
         var form = document.getElementsByName('choice');
         for (var i = 0, length = form.length; i < length; i++) {
             if (form[i].checked) {
-              
-                console.log(form[i].value);
-            
+
                 break;
-     
             }
-            
         }
-        
-          $("#theform").empty()
-        $("#theform").append("Question: " + questions[Counter])
+        $("#theform").empty()
+        $("#theform").append("The first question is..." + questions[Counter])
         $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3 checked="checked> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
-    
-        newSurvey.scores.push(form[i].value)
-        if (Counter>=10){
-          // this does nothing currently
-          parsingInt()
-          findmatch()
-        } else {
-          NextButton()
-        }
-      
-        
-        
+        NextButton()
+
+
     });
 
+    function NextButton() {
+        var Nextbutton = document.createElement("button");
+        Nextbutton.innerHTML = "Next";
+        $(Nextbutton).addClass("btn btn-primary submit")
 
-}            
-function parsingInt(){
-  for (var i = 0; i< newSurvey.scores.length;i++){
-    placeholder = parseInt(newSurvey.scores[i])
-    console.log(placeholder)
-    newSurvey.scores[i]=placeholder
-  }
-  
-}
-function findmatch(){
-  console.log("find match ran")
- // ajax call to server with friend object
- $.post("/api/friends", newSurvey,
+        var body = document.getElementById("theform");
+        body.appendChild(Nextbutton);
+
+        Nextbutton.addEventListener("click", function() {
+            Counter = Counter + 1
+            var form = document.getElementsByName('choice');
+            for (var i = 0, length = form.length; i < length; i++) {
+                if (form[i].checked) {
+
+                    console.log(form[i].value);
+
+                    break;
+
+                }
+
+            }
+
+            $("#theform").empty()
+            $("#theform").append("Question: " + questions[Counter])
+            $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3 checked="checked> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+
+            newSurvey.scores.push(form[i].value)
+            if (Counter >= 10) {
+
+                parsingInt()
+                findmatch()
+            } else {
+                NextButton()
+            }
+
+
+
+        });
+
+
+    }
+
+    function parsingInt() {
+        for (var i = 0; i < newSurvey.scores.length; i++) {
+            placeholder = parseInt(newSurvey.scores[i])
+            console.log(placeholder)
+            newSurvey.scores[i] = placeholder
+        }
+
+    }
+
+    function findmatch() {
+        console.log("find match ran")
+
+        $.post("/api/friends", newSurvey,
             function(data, status) {
-              console.log(data.newFriendName)
+                console.log(data.newFriendName)
                 $("#theform").empty()
-                $("#FormPanel").append('<p> '+ data.newFriendName+'<p>');
+                $("#FormPanel").append('<p> ' + data.newFriendName + '<p>');
                 var img = $('<img id="dynamic">');
                 img.attr('src', data.newFriendPhoto);
                 img.attr("height", '400px');
                 img.attr("width", 'auto');
                 $("#FormPanel").append(img)
-                //img.appendTo('#FormPanel');
-              //  $("#FormPanel").attr("src", data.newFriendPhoto);
-                
+
+
             });
-}
+    }
 </script>
 
- <style type="text/css">
-Body {
-    background:#eff2ff
+<style type="text/css">
+    Body {
+        background: #eff2ff
+    }
 
-}
-.jumbotron{
-  
-background:#d7daf1
-}
+    .jumbotron {
 
- </style>
+        background: #d7daf1
+    }
+</style>
