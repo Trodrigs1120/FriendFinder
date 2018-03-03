@@ -6,6 +6,7 @@
 
   <!-- Latest compiled and minified CSS & JS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -15,7 +16,7 @@
   <div class="container">
 
     <div class="jumbotron">
-      <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> Friend Finder</h1>
+      <h1 class="text-center"><span class="glyphicon glyphicon-heart"></span> Friend Finder</h1>
       <hr>
       
       <br>
@@ -110,7 +111,7 @@ $(".submit").on("click", function(event) {
     console.log(newSurvey.scores);
     $("#theform").empty()
     $("#theform").append("The first question is..." + questions[Counter])
-    $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+    $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3 checked="checked> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
     NextButton()
 
 
@@ -131,24 +132,19 @@ function NextButton() {
         var form = document.getElementsByName('choice');
         for (var i = 0, length = form.length; i < length; i++) {
             if (form[i].checked) {
-                // do whatever you want with the checked radio
+              
                 console.log(form[i].value);
-                // only one radio can be logically checked, we wont check the rest
+            
                 break;
-              //  if (i=length && form[i].checked===false){
-              //    Counter--
-              //    alert("Please select a valid answer");
-              //    badanswer=1
-              //    break
-             // }
+     
             }
             
         }
         
           $("#theform").empty()
         $("#theform").append("Question: " + questions[Counter])
-        $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
-
+        $("#theform").append('<form> <input type="radio" id="Choice1" name="choice" value=1> <label for="Choice1">Strongly Disagree</label> <input type="radio" id="Choice2" name="choice" value=2> <label for="Choice2">Disagree</label> <input type="radio" id="Choice3" name="choice" value=3 checked="checked> <label for="Choice3">Neutral</label> <input type="radio" id="Choice4" name="choice" value=4> <label for="Choice4">Agree</label> <input type="radio" id="Choice5"name="choice" value=5> <label for="Choice5">Strongly Agree</label> </div> </form> ')
+    
         newSurvey.scores.push(form[i].value)
         if (Counter>=10){
           // this does nothing currently
@@ -179,11 +175,27 @@ function findmatch(){
             function(data, status) {
               console.log(data.newFriendName)
                 $("#theform").empty()
-                $("#FormPanel").append(data.newFriendName);
+                $("#FormPanel").append('<p> '+ data.newFriendName+'<p>');
+                var img = $('<img id="dynamic">');
+                img.attr('src', data.newFriendPhoto);
+                img.attr("height", '400px');
+                img.attr("width", 'auto');
+                $("#FormPanel").append(img)
+                //img.appendTo('#FormPanel');
               //  $("#FormPanel").attr("src", data.newFriendPhoto);
                 
             });
 }
 </script>
+
  <style type="text/css">
+Body {
+    background:#eff2ff
+
+}
+.jumbotron{
+  
+background:#d7daf1
+}
+
  </style>

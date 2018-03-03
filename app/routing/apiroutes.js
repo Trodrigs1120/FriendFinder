@@ -40,11 +40,11 @@ module.exports = function(app) {
 				var newFriendName = matchData[k].friendName;
 				var newFriendPhoto = matchData[k].friendphoto;
 				var bestFriend  = {
-          newFriendName: newFriendName
-          
+          newFriendName: newFriendName,
+          newFriendPhoto: newFriendPhoto
         }
         res.send(bestFriend);
-        console.log(newFriendName + "this is line 43")
+        
 
       };
       
